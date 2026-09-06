@@ -1,0 +1,3 @@
+* text=auto eol=lf
+# Preserve the supplied document exactly, including its original line endings.
+docs/TAKE_TWO_SPEC_v1.6.md -text

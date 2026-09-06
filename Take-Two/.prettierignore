@@ -1,0 +1,8 @@
+node_modules/
+.expo/
+dist/
+coverage/
+drizzle/
+package-lock.json
+# Preserve the supplied source specification byte for byte.
+docs/TAKE_TWO_SPEC_v1.6.md
