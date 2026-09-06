@@ -43,4 +43,6 @@ At each stable phase:
 4. Push the checkpoint to the configured GitHub destination. Record the commit SHA, branch, phase and check results. A checkpoint does not require a merge, release or deployment.
 5. If no destination is configured, request the repository URL and leave publication pending. Never report a GitHub checkpoint until the remote push succeeds.
 
-The user requested a new GitHub repository for phase checkpoints. Use a private `Take-Two` repository under the authenticated user's account. Keep the existing parent repository and its `Take-Two/` subdirectory; do not initialize nested Git history. Repository creation/publication is pending GitHub sign-in; do not claim a remote checkpoint until the push is verified.
+The user selected [Sumit607/Communication30](https://github.com/Sumit607/Communication30) and explicitly approved keeping it public. Use `origin` with `https://github.com/Sumit607/Communication30.git` and the `codex/foundation` branch for the initial checkpoint. Keep the existing parent repository and its `Take-Two/` subdirectory; do not initialize nested Git history.
+
+The initial foundation snapshot is commit `66aaac7` (engineering foundation and design rules). Evidence: TypeScript, lint, formatting, 12 tests, Expo Doctor 21/21 and the Android production bundle passed; the source specification hash is unchanged. Physical-phone verification and P0 coaching validation remain pending. Follow-up documentation commits record the selected repository. Verify remote commit IDs after each push before reporting publication success.
