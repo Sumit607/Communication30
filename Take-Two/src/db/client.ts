@@ -10,4 +10,4 @@ export function createDatabaseClient(connection: SQLiteDatabase) {
   return drizzle(connection, { schema, logger: false });
 }
 
-export type AppDatabase = ReturnType<typeof createDatabaseClient>;
+export type AppDatabase = Omit<ReturnType<typeof createDatabaseClient>, '$client'>;

@@ -1,12 +1,14 @@
 import { render, screen } from '@testing-library/react-native';
+
 import type { PropsWithChildren } from 'react';
-
 import RootLayout from '@/app/_layout';
-
-jest.mock('expo-router', () => ({
-  Stack: jest.requireActual('@/features/programme/home-screen').default,
+jest.mock('expo-router', () => {
+  const Text = jest.requireActual('react-native').Text;
+  return { Stack: () => <Text>Route content</Text> };
+});
+jest.mock('@/db/use-database', () => ({
+  RepositoryProvider: ({ children }: PropsWithChildren) => children,
 }));
-
 let mockStorageFailure = false;
 jest.mock('expo-sqlite', () => ({
   SQLiteProvider: ({ children }: PropsWithChildren) => {
@@ -14,23 +16,19 @@ jest.mock('expo-sqlite', () => ({
     return children;
   },
 }));
-
 afterEach(() => {
   mockStorageFailure = false;
   jest.restoreAllMocks();
 });
-
-test('minimal root shell renders without starting product workflows', async () => {
+test('root renders routes only after storage initialization', async () => {
   await render(<RootLayout />);
-  expect(screen.getByText('Project setup complete')).toBeOnTheScreen();
-  expect(screen.getByText(/Coach validation is still pending/)).toBeOnTheScreen();
+  expect(screen.getByText('Route content')).toBeOnTheScreen();
 });
-
-test('storage failure hides the shell and explains recovery without revealing error details', async () => {
+test('storage failure hides routes and preserves the recovery message', async () => {
   mockStorageFailure = true;
   jest.spyOn(console, 'error').mockImplementation(() => {});
   await render(<RootLayout />);
-  expect(screen.getByRole('alert')).toHaveTextContent(/Your data has not been reset\./);
-  expect(screen.queryByText('Project setup complete')).toBeNull();
+  expect(screen.getByRole('alert')).toHaveTextContent(/Your data has not been reset/);
+  expect(screen.queryByText('Route content')).toBeNull();
   expect(screen.queryByText('Synthetic storage failure')).toBeNull();
 });

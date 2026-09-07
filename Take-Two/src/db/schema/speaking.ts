@@ -65,6 +65,7 @@ export const feedback = sqliteTable(
     schemaVersion: text('schema_version').notNull(),
     rubricVersion: text('rubric_version').notNull(),
     transcript: text('transcript'),
+    reviewedAt: integer('reviewed_at', { mode: 'timestamp_ms' }),
     overall: real('overall'),
     structure: real('structure'),
     clarity: real('clarity'),

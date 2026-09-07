@@ -1,0 +1,2522 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "16827fa0-413d-4e90-ba6d-9343d7ad983d",
+  "prevId": "8bd9327c-e50b-49f3-91f4-86d706ecfde8",
+  "tables": {
+    "days": {
+      "name": "days",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "programme_id": {
+          "name": "programme_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_no": {
+          "name": "day_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "brief": {
+          "name": "brief",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "structure_expected": {
+          "name": "structure_expected",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "interaction_mode": {
+          "name": "interaction_mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "writing_mode": {
+          "name": "writing_mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "target_overall": {
+          "name": "target_overall",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "days_programme_number": {
+          "name": "days_programme_number",
+          "columns": [
+            "programme_id",
+            "day_no"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "days_programme_id_programmes_id_fk": {
+          "name": "days_programme_id_programmes_id_fk",
+          "tableFrom": "days",
+          "tableTo": "programmes",
+          "columnsFrom": [
+            "programme_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "days_number_range": {
+          "name": "days_number_range",
+          "value": "typeof(\"days\".\"day_no\") = 'integer' and \"days\".\"day_no\" between 1 and 30"
+        },
+        "days_writing_mode": {
+          "name": "days_writing_mode",
+          "value": "\"days\".\"writing_mode\" in ('long', 'compression')"
+        },
+        "days_target_range": {
+          "name": "days_target_range",
+          "value": "\"days\".\"target_overall\" between 1 and 10"
+        }
+      }
+    },
+    "outlines": {
+      "name": "outlines",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "task_id": {
+          "name": "task_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "structure": {
+          "name": "structure",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "line1": {
+          "name": "line1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "line2": {
+          "name": "line2",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "line3": {
+          "name": "line3",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "line4": {
+          "name": "line4",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "outlines_day": {
+          "name": "outlines_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "outlines_task": {
+          "name": "outlines_task",
+          "columns": [
+            "task_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "outlines_day_id_days_id_fk": {
+          "name": "outlines_day_id_days_id_fk",
+          "tableFrom": "outlines",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "outlines_task_id_day_id_task_instances_id_day_id_fk": {
+          "name": "outlines_task_id_day_id_task_instances_id_day_id_fk",
+          "tableFrom": "outlines",
+          "tableTo": "task_instances",
+          "columnsFrom": [
+            "task_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "programmes": {
+      "name": "programmes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "curriculum_version": {
+          "name": "curriculum_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "timezone": {
+          "name": "timezone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "task_instances": {
+      "name": "task_instances",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ordinal": {
+          "name": "ordinal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "topic": {
+          "name": "topic",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "policy_version": {
+          "name": "policy_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "tasks_id_day": {
+          "name": "tasks_id_day",
+          "columns": [
+            "id",
+            "day_id"
+          ],
+          "isUnique": true
+        },
+        "tasks_day_ordinal": {
+          "name": "tasks_day_ordinal",
+          "columns": [
+            "day_id",
+            "ordinal"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "task_instances_day_id_days_id_fk": {
+          "name": "task_instances_day_id_days_id_fk",
+          "tableFrom": "task_instances",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "tasks_positive_ordinal": {
+          "name": "tasks_positive_ordinal",
+          "value": "\"task_instances\".\"ordinal\" >= 1"
+        },
+        "tasks_kind": {
+          "name": "tasks_kind",
+          "value": "\"task_instances\".\"kind\" in ('core', 'drill', 'followup')"
+        }
+      }
+    },
+    "thinking": {
+      "name": "thinking",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "task_id": {
+          "name": "task_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "what": {
+          "name": "what",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "why": {
+          "name": "why",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "so_what": {
+          "name": "so_what",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "my_view": {
+          "name": "my_view",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "thinking_day": {
+          "name": "thinking_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "thinking_task": {
+          "name": "thinking_task",
+          "columns": [
+            "task_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "thinking_day_id_days_id_fk": {
+          "name": "thinking_day_id_days_id_fk",
+          "tableFrom": "thinking",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "thinking_task_id_day_id_task_instances_id_day_id_fk": {
+          "name": "thinking_task_id_day_id_task_instances_id_day_id_fk",
+          "tableFrom": "thinking",
+          "tableTo": "task_instances",
+          "columnsFrom": [
+            "task_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "inputs": {
+      "name": "inputs",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "source_id": {
+          "name": "source_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "content_snapshot": {
+          "name": "content_snapshot",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "memory_fact": {
+          "name": "memory_fact",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "shown_at": {
+          "name": "shown_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "inputs_day": {
+          "name": "inputs_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "inputs_source": {
+          "name": "inputs_source",
+          "columns": [
+            "source_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "inputs_day_id_days_id_fk": {
+          "name": "inputs_day_id_days_id_fk",
+          "tableFrom": "inputs",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "inputs_source_id_sources_id_fk": {
+          "name": "inputs_source_id_sources_id_fk",
+          "tableFrom": "inputs",
+          "tableTo": "sources",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "inputs_kind": {
+          "name": "inputs_kind",
+          "value": "\"inputs\".\"kind\" in ('article', 'video')"
+        }
+      }
+    },
+    "settings": {
+      "name": "settings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "reminder_hour": {
+          "name": "reminder_hour",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 18
+        },
+        "reminder_minute": {
+          "name": "reminder_minute",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "recording_quality": {
+          "name": "recording_quality",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'720p'"
+        },
+        "gemini_model": {
+          "name": "gemini_model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "diary_lock_enabled": {
+          "name": "diary_lock_enabled",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "privacy_acknowledged_at": {
+          "name": "privacy_acknowledged_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "settings_singleton": {
+          "name": "settings_singleton",
+          "value": "\"settings\".\"id\" = 1"
+        },
+        "settings_hour": {
+          "name": "settings_hour",
+          "value": "\"settings\".\"reminder_hour\" between 0 and 23"
+        },
+        "settings_minute": {
+          "name": "settings_minute",
+          "value": "\"settings\".\"reminder_minute\" between 0 and 59"
+        },
+        "settings_lock": {
+          "name": "settings_lock",
+          "value": "\"settings\".\"diary_lock_enabled\" in (0, 1)"
+        }
+      }
+    },
+    "sources": {
+      "name": "sources",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "domain": {
+          "name": "domain",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "feed_url": {
+          "name": "feed_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "enabled": {
+          "name": "enabled",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "sources_kind": {
+          "name": "sources_kind",
+          "value": "\"sources\".\"kind\" in ('article', 'video')"
+        },
+        "sources_enabled": {
+          "name": "sources_enabled",
+          "value": "\"sources\".\"enabled\" in (0, 1)"
+        }
+      }
+    },
+    "topics": {
+      "name": "topics",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "domain": {
+          "name": "domain",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "interaction_fit": {
+          "name": "interaction_fit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "last_drawn_at": {
+          "name": "last_drawn_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "vocab": {
+      "name": "vocab",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "word": {
+          "name": "word",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "meaning": {
+          "name": "meaning",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "example_sentence": {
+          "name": "example_sentence",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "source_understood_at": {
+          "name": "source_understood_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "writing_used_at": {
+          "name": "writing_used_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "speaking_used_at": {
+          "name": "speaking_used_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "landed_at": {
+          "name": "landed_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "vocab_day": {
+          "name": "vocab_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "vocab_day_id_days_id_fk": {
+          "name": "vocab_day_id_days_id_fk",
+          "tableFrom": "vocab",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "corrections": {
+      "name": "corrections",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "feedback_id": {
+          "name": "feedback_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "priority": {
+          "name": "priority",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "at_time_s": {
+          "name": "at_time_s",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "issue": {
+          "name": "issue",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fix": {
+          "name": "fix",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "corrections_day": {
+          "name": "corrections_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "corrections_feedback_priority": {
+          "name": "corrections_feedback_priority",
+          "columns": [
+            "feedback_id",
+            "priority"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "corrections_day_id_days_id_fk": {
+          "name": "corrections_day_id_days_id_fk",
+          "tableFrom": "corrections",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "corrections_feedback_id_day_id_feedback_id_day_id_fk": {
+          "name": "corrections_feedback_id_day_id_feedback_id_day_id_fk",
+          "tableFrom": "corrections",
+          "tableTo": "feedback",
+          "columnsFrom": [
+            "feedback_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "corrections_max_three": {
+          "name": "corrections_max_three",
+          "value": "typeof(\"corrections\".\"priority\") = 'integer' and \"corrections\".\"priority\" between 1 and 3"
+        },
+        "corrections_timestamp": {
+          "name": "corrections_timestamp",
+          "value": "\"corrections\".\"at_time_s\" >= 0"
+        }
+      }
+    },
+    "feedback": {
+      "name": "feedback",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "take_id": {
+          "name": "take_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "prompt_version": {
+          "name": "prompt_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "schema_version": {
+          "name": "schema_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rubric_version": {
+          "name": "rubric_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "transcript": {
+          "name": "transcript",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reviewed_at": {
+          "name": "reviewed_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "overall": {
+          "name": "overall",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "structure": {
+          "name": "structure",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "clarity": {
+          "name": "clarity",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "word_choice": {
+          "name": "word_choice",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "pace_pausing": {
+          "name": "pace_pausing",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "flow": {
+          "name": "flow",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "presence": {
+          "name": "presence",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "pace_wpm": {
+          "name": "pace_wpm",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fillers_per_min": {
+          "name": "fillers_per_min",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "result_json": {
+          "name": "result_json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "feedback_day": {
+          "name": "feedback_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "feedback_take": {
+          "name": "feedback_take",
+          "columns": [
+            "take_id"
+          ],
+          "isUnique": false
+        },
+        "feedback_id_day": {
+          "name": "feedback_id_day",
+          "columns": [
+            "id",
+            "day_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "feedback_day_id_days_id_fk": {
+          "name": "feedback_day_id_days_id_fk",
+          "tableFrom": "feedback",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "feedback_take_id_day_id_takes_id_day_id_fk": {
+          "name": "feedback_take_id_day_id_takes_id_day_id_fk",
+          "tableFrom": "feedback",
+          "tableTo": "takes",
+          "columnsFrom": [
+            "take_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "feedback_kind": {
+          "name": "feedback_kind",
+          "value": "\"feedback\".\"kind\" in ('coach', 'delta', 'followup')"
+        },
+        "feedback_scores": {
+          "name": "feedback_scores",
+          "value": "(\"feedback\".\"overall\" is null or \"feedback\".\"overall\" between 1 and 10)\n    and (\"feedback\".\"structure\" is null or \"feedback\".\"structure\" between 1 and 10)\n    and (\"feedback\".\"clarity\" is null or \"feedback\".\"clarity\" between 1 and 10)\n    and (\"feedback\".\"word_choice\" is null or \"feedback\".\"word_choice\" between 1 and 10)\n    and (\"feedback\".\"pace_pausing\" is null or \"feedback\".\"pace_pausing\" between 1 and 10)\n    and (\"feedback\".\"flow\" is null or \"feedback\".\"flow\" between 1 and 10)\n    and (\"feedback\".\"presence\" is null or \"feedback\".\"presence\" between 1 and 10)"
+        },
+        "feedback_rates": {
+          "name": "feedback_rates",
+          "value": "(\"feedback\".\"pace_wpm\" is null or \"feedback\".\"pace_wpm\" >= 0)\n    and (\"feedback\".\"fillers_per_min\" is null or \"feedback\".\"fillers_per_min\" >= 0)"
+        },
+        "feedback_json": {
+          "name": "feedback_json",
+          "value": "json_valid(\"feedback\".\"result_json\")"
+        }
+      }
+    },
+    "followup_attempts": {
+      "name": "followup_attempts",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "task_id": {
+          "name": "task_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "take_id": {
+          "name": "take_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "followup_id": {
+          "name": "followup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "question": {
+          "name": "question",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "answer_transcript": {
+          "name": "answer_transcript",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thinking_time_s": {
+          "name": "thinking_time_s",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "self_answered": {
+          "name": "self_answered",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "structure_verdict": {
+          "name": "structure_verdict",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "clarity_verdict": {
+          "name": "clarity_verdict",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "next_improvement": {
+          "name": "next_improvement",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "score": {
+          "name": "score",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "score_rubric_version": {
+          "name": "score_rubric_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "analysis_state": {
+          "name": "analysis_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'not_requested'"
+        },
+        "feedback_id": {
+          "name": "feedback_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "answered_at": {
+          "name": "answered_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "followup_attempts_day": {
+          "name": "followup_attempts_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "followup_attempts_parent": {
+          "name": "followup_attempts_parent",
+          "columns": [
+            "followup_id"
+          ],
+          "isUnique": false
+        },
+        "followup_attempts_take": {
+          "name": "followup_attempts_take",
+          "columns": [
+            "take_id"
+          ],
+          "isUnique": true
+        },
+        "followup_attempts_id_day": {
+          "name": "followup_attempts_id_day",
+          "columns": [
+            "id",
+            "day_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "followup_attempts_day_id_days_id_fk": {
+          "name": "followup_attempts_day_id_days_id_fk",
+          "tableFrom": "followup_attempts",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "followup_attempts_take_id_day_id_task_id_takes_id_day_id_task_id_fk": {
+          "name": "followup_attempts_take_id_day_id_task_id_takes_id_day_id_task_id_fk",
+          "tableFrom": "followup_attempts",
+          "tableTo": "takes",
+          "columnsFrom": [
+            "take_id",
+            "day_id",
+            "task_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id",
+            "task_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "followup_attempts_followup_id_day_id_followups_id_day_id_fk": {
+          "name": "followup_attempts_followup_id_day_id_followups_id_day_id_fk",
+          "tableFrom": "followup_attempts",
+          "tableTo": "followups",
+          "columnsFrom": [
+            "followup_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "followup_attempts_feedback_id_day_id_feedback_id_day_id_fk": {
+          "name": "followup_attempts_feedback_id_day_id_feedback_id_day_id_fk",
+          "tableFrom": "followup_attempts",
+          "tableTo": "feedback",
+          "columnsFrom": [
+            "feedback_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "followup_thinking_time": {
+          "name": "followup_thinking_time",
+          "value": "\"followup_attempts\".\"thinking_time_s\" >= 0"
+        },
+        "followup_self_check": {
+          "name": "followup_self_check",
+          "value": "\"followup_attempts\".\"self_answered\" in ('yes', 'partly', 'no')"
+        },
+        "followup_score_provenance": {
+          "name": "followup_score_provenance",
+          "value": "\"followup_attempts\".\"score\" is null or length(trim(\"followup_attempts\".\"score_rubric_version\")) > 0 and \"followup_attempts\".\"score_rubric_version\" is not null"
+        },
+        "followup_analysis_state": {
+          "name": "followup_analysis_state",
+          "value": "\"followup_attempts\".\"analysis_state\" in ('not_requested', 'pending', 'complete', 'failed')"
+        }
+      }
+    },
+    "followups": {
+      "name": "followups",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "source_take_id": {
+          "name": "source_take_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mode": {
+          "name": "mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "question": {
+          "name": "question",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "prompt_version": {
+          "name": "prompt_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revealed_at": {
+          "name": "revealed_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "followups_day": {
+          "name": "followups_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "followups_source_take": {
+          "name": "followups_source_take",
+          "columns": [
+            "source_take_id"
+          ],
+          "isUnique": false
+        },
+        "followups_id_day": {
+          "name": "followups_id_day",
+          "columns": [
+            "id",
+            "day_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "followups_day_id_days_id_fk": {
+          "name": "followups_day_id_days_id_fk",
+          "tableFrom": "followups",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "followups_source_take_id_day_id_takes_id_day_id_fk": {
+          "name": "followups_source_take_id_day_id_takes_id_day_id_fk",
+          "tableFrom": "followups",
+          "tableTo": "takes",
+          "columnsFrom": [
+            "source_take_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "measurements": {
+      "name": "measurements",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "take_id": {
+          "name": "take_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "algorithm_version": {
+          "name": "algorithm_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "result_json": {
+          "name": "result_json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "measurements_day": {
+          "name": "measurements_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "measurements_take": {
+          "name": "measurements_take",
+          "columns": [
+            "take_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "measurements_day_id_days_id_fk": {
+          "name": "measurements_day_id_days_id_fk",
+          "tableFrom": "measurements",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "measurements_take_id_day_id_takes_id_day_id_fk": {
+          "name": "measurements_take_id_day_id_takes_id_day_id_fk",
+          "tableFrom": "measurements",
+          "tableTo": "takes",
+          "columnsFrom": [
+            "take_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "measurements_json": {
+          "name": "measurements_json",
+          "value": "json_valid(\"measurements\".\"result_json\")"
+        }
+      }
+    },
+    "takes": {
+      "name": "takes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "task_id": {
+          "name": "task_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "take_no": {
+          "name": "take_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'reserved'"
+        },
+        "file_path": {
+          "name": "file_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "duration_s": {
+          "name": "duration_s",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "bytes": {
+          "name": "bytes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "recorded_at": {
+          "name": "recorded_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "takes_day": {
+          "name": "takes_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "takes_task_slot": {
+          "name": "takes_task_slot",
+          "columns": [
+            "task_id",
+            "take_no"
+          ],
+          "isUnique": true
+        },
+        "takes_id_day": {
+          "name": "takes_id_day",
+          "columns": [
+            "id",
+            "day_id"
+          ],
+          "isUnique": true
+        },
+        "takes_id_day_task": {
+          "name": "takes_id_day_task",
+          "columns": [
+            "id",
+            "day_id",
+            "task_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "takes_day_id_days_id_fk": {
+          "name": "takes_day_id_days_id_fk",
+          "tableFrom": "takes",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "takes_task_id_day_id_task_instances_id_day_id_fk": {
+          "name": "takes_task_id_day_id_task_instances_id_day_id_fk",
+          "tableFrom": "takes",
+          "tableTo": "task_instances",
+          "columnsFrom": [
+            "task_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "takes_slot_range": {
+          "name": "takes_slot_range",
+          "value": "typeof(\"takes\".\"take_no\") = 'integer' and \"takes\".\"take_no\" between 1 and 3"
+        },
+        "takes_state": {
+          "name": "takes_state",
+          "value": "\"takes\".\"state\" in ('reserved', 'recording', 'saved', 'aborted', 'failed')"
+        },
+        "takes_duration": {
+          "name": "takes_duration",
+          "value": "\"takes\".\"duration_s\" >= 0"
+        },
+        "takes_bytes": {
+          "name": "takes_bytes",
+          "value": "\"takes\".\"bytes\" >= 0"
+        }
+      }
+    },
+    "essay_feedback": {
+      "name": "essay_feedback",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "essay_id": {
+          "name": "essay_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "prompt_version": {
+          "name": "prompt_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "schema_version": {
+          "name": "schema_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "score": {
+          "name": "score",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "result_json": {
+          "name": "result_json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "essay_feedback_day": {
+          "name": "essay_feedback_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "essay_feedback_essay": {
+          "name": "essay_feedback_essay",
+          "columns": [
+            "essay_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "essay_feedback_day_id_days_id_fk": {
+          "name": "essay_feedback_day_id_days_id_fk",
+          "tableFrom": "essay_feedback",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "essay_feedback_essay_id_day_id_essays_id_day_id_fk": {
+          "name": "essay_feedback_essay_id_day_id_essays_id_day_id_fk",
+          "tableFrom": "essay_feedback",
+          "tableTo": "essays",
+          "columnsFrom": [
+            "essay_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "essay_feedback_score": {
+          "name": "essay_feedback_score",
+          "value": "\"essay_feedback\".\"score\" between 1 and 10"
+        },
+        "essay_feedback_json": {
+          "name": "essay_feedback_json",
+          "value": "json_valid(\"essay_feedback\".\"result_json\")"
+        }
+      }
+    },
+    "essays": {
+      "name": "essays",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mode": {
+          "name": "mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "topic": {
+          "name": "topic",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "word_count": {
+          "name": "word_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "essays_day": {
+          "name": "essays_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "essays_id_day": {
+          "name": "essays_id_day",
+          "columns": [
+            "id",
+            "day_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "essays_day_id_days_id_fk": {
+          "name": "essays_day_id_days_id_fk",
+          "tableFrom": "essays",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "essays_mode": {
+          "name": "essays_mode",
+          "value": "\"essays\".\"mode\" in ('long', 'compression')"
+        },
+        "essays_revision": {
+          "name": "essays_revision",
+          "value": "\"essays\".\"revision\" >= 1"
+        },
+        "essays_word_count": {
+          "name": "essays_word_count",
+          "value": "\"essays\".\"word_count\" >= 0"
+        }
+      }
+    },
+    "confidence_ratings": {
+      "name": "confidence_ratings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "task_id": {
+          "name": "task_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "take_id": {
+          "name": "take_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "after_take_id": {
+          "name": "after_take_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "followup_attempt_id": {
+          "name": "followup_attempt_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "before_confidence": {
+          "name": "before_confidence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "after_confidence": {
+          "name": "after_confidence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "after_live_q_confidence": {
+          "name": "after_live_q_confidence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "before_rated_at": {
+          "name": "before_rated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "after_rated_at": {
+          "name": "after_rated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "after_live_q_rated_at": {
+          "name": "after_live_q_rated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "confidence_day": {
+          "name": "confidence_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": false
+        },
+        "confidence_task": {
+          "name": "confidence_task",
+          "columns": [
+            "task_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "confidence_ratings_day_id_days_id_fk": {
+          "name": "confidence_ratings_day_id_days_id_fk",
+          "tableFrom": "confidence_ratings",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "confidence_ratings_task_id_day_id_task_instances_id_day_id_fk": {
+          "name": "confidence_ratings_task_id_day_id_task_instances_id_day_id_fk",
+          "tableFrom": "confidence_ratings",
+          "tableTo": "task_instances",
+          "columnsFrom": [
+            "task_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "confidence_ratings_take_id_day_id_task_id_takes_id_day_id_task_id_fk": {
+          "name": "confidence_ratings_take_id_day_id_task_id_takes_id_day_id_task_id_fk",
+          "tableFrom": "confidence_ratings",
+          "tableTo": "takes",
+          "columnsFrom": [
+            "take_id",
+            "day_id",
+            "task_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id",
+            "task_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "confidence_ratings_after_take_id_day_id_task_id_takes_id_day_id_task_id_fk": {
+          "name": "confidence_ratings_after_take_id_day_id_task_id_takes_id_day_id_task_id_fk",
+          "tableFrom": "confidence_ratings",
+          "tableTo": "takes",
+          "columnsFrom": [
+            "after_take_id",
+            "day_id",
+            "task_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id",
+            "task_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "confidence_ratings_followup_attempt_id_day_id_followup_attempts_id_day_id_fk": {
+          "name": "confidence_ratings_followup_attempt_id_day_id_followup_attempts_id_day_id_fk",
+          "tableFrom": "confidence_ratings",
+          "tableTo": "followup_attempts",
+          "columnsFrom": [
+            "followup_attempt_id",
+            "day_id"
+          ],
+          "columnsTo": [
+            "id",
+            "day_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "confidence_before_range": {
+          "name": "confidence_before_range",
+          "value": "\"confidence_ratings\".\"before_confidence\" is null or (typeof(\"confidence_ratings\".\"before_confidence\") = 'integer' and \"confidence_ratings\".\"before_confidence\" between 1 and 5)"
+        },
+        "confidence_after_range": {
+          "name": "confidence_after_range",
+          "value": "\"confidence_ratings\".\"after_confidence\" is null or (typeof(\"confidence_ratings\".\"after_confidence\") = 'integer' and \"confidence_ratings\".\"after_confidence\" between 1 and 5)"
+        },
+        "confidence_live_q_range": {
+          "name": "confidence_live_q_range",
+          "value": "\"confidence_ratings\".\"after_live_q_confidence\" is null or (typeof(\"confidence_ratings\".\"after_live_q_confidence\") = 'integer' and \"confidence_ratings\".\"after_live_q_confidence\" between 1 and 5)"
+        },
+        "confidence_before_time": {
+          "name": "confidence_before_time",
+          "value": "(\"confidence_ratings\".\"before_confidence\" is null) = (\"confidence_ratings\".\"before_rated_at\" is null)"
+        },
+        "confidence_after_time": {
+          "name": "confidence_after_time",
+          "value": "(\"confidence_ratings\".\"after_confidence\" is null) = (\"confidence_ratings\".\"after_rated_at\" is null)"
+        },
+        "confidence_live_q_time": {
+          "name": "confidence_live_q_time",
+          "value": "(\"confidence_ratings\".\"after_live_q_confidence\" is null) = (\"confidence_ratings\".\"after_live_q_rated_at\" is null)"
+        },
+        "confidence_after_take": {
+          "name": "confidence_after_take",
+          "value": "\"confidence_ratings\".\"after_confidence\" is null or \"confidence_ratings\".\"after_take_id\" is not null"
+        },
+        "confidence_live_q_attempt": {
+          "name": "confidence_live_q_attempt",
+          "value": "\"confidence_ratings\".\"after_live_q_confidence\" is null or \"confidence_ratings\".\"followup_attempt_id\" is not null"
+        }
+      }
+    },
+    "diary": {
+      "name": "diary",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day_id": {
+          "name": "day_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "did": {
+          "name": "did",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "learned": {
+          "name": "learned",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "tomorrow": {
+          "name": "tomorrow",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "mood": {
+          "name": "mood",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(strftime('%s', 'now') as integer) * 1000)"
+        }
+      },
+      "indexes": {
+        "diary_day": {
+          "name": "diary_day",
+          "columns": [
+            "day_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "diary_day_id_days_id_fk": {
+          "name": "diary_day_id_days_id_fk",
+          "tableFrom": "diary",
+          "tableTo": "days",
+          "columnsFrom": [
+            "day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "diary_mood": {
+          "name": "diary_mood",
+          "value": "\"diary\".\"mood\" is null or (typeof(\"diary\".\"mood\") = 'integer' and \"diary\".\"mood\" between 1 and 5)"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

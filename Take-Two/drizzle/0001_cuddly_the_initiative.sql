@@ -1,0 +1,1 @@
+ALTER TABLE `feedback` ADD `reviewed_at` integer;

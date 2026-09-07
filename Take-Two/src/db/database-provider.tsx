@@ -1,6 +1,6 @@
 import { SQLiteProvider } from 'expo-sqlite';
 import { Component, Suspense, type PropsWithChildren } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import { DATABASE_NAME } from './client';
 import { initializeDatabase } from './initialize';
@@ -31,7 +31,11 @@ export function DatabaseProvider({ children }: PropsWithChildren) {
   return (
     <DatabaseErrorBoundary>
       <Suspense fallback={<Text>Opening local storage…</Text>}>
-        <SQLiteProvider databaseName={DATABASE_NAME} onInit={initializeDatabase} useSuspense>
+        <SQLiteProvider
+          databaseName={Platform.OS === 'web' ? ':memory:' : DATABASE_NAME}
+          onInit={initializeDatabase}
+          useSuspense
+        >
           {children}
         </SQLiteProvider>
       </Suspense>

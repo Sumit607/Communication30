@@ -3,9 +3,13 @@ import type { ExpoConfig } from 'expo/config';
 const config: ExpoConfig = {
   name: 'Take Two',
   slug: 'take-two',
+  owner: 'sumitghode607',
   scheme: 'take-two',
   platforms: ['android', 'web'],
-  plugins: ['expo-router', 'expo-sqlite', 'expo-secure-store', 'expo-sharing', 'expo-asset'],
+  plugins: ['expo-router', 'expo-sqlite', 'expo-secure-store', 'expo-sharing', 'expo-asset',
+    ['expo-camera', { cameraPermission: 'Take Two records speaking practice on this phone.', microphonePermission: 'Take Two records your voice for your speaking practice.', recordAudioAndroid: true }],
+    ['expo-video', { supportsBackgroundPlayback: false, supportsPictureInPicture: false }],
+    'expo-local-authentication', 'expo-notifications'],
   experiments: { typedRoutes: true },
   version: '1.0.0',
   orientation: 'portrait',
@@ -13,8 +17,8 @@ const config: ExpoConfig = {
   userInterfaceStyle: 'light',
   ios: { supportsTablet: true },
   android: {
-    // Placeholder identity: replace before registering an EAS/release application.
-    package: 'com.example.taketwo',
+    package: 'com.sumitghode607.taketwo',
+    versionCode: 1,
     allowBackup: false,
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',
@@ -25,6 +29,7 @@ const config: ExpoConfig = {
     predictiveBackGestureEnabled: false,
   },
   web: { favicon: './assets/icons/favicon.png' },
+  extra: { eas: { projectId: 'bdae1b4a-00e8-48d3-81d3-61f714db5449' } },
 };
 
 export default config;
