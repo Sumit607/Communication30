@@ -4,7 +4,7 @@ const config: ExpoConfig = {
   name: 'Take Two',
   slug: 'take-two',
   scheme: 'take-two',
-  platforms: ['android'],
+  platforms: ['android', 'web'],
   plugins: ['expo-router', 'expo-sqlite', 'expo-secure-store', 'expo-sharing', 'expo-asset'],
   experiments: { typedRoutes: true },
   version: '1.0.0',

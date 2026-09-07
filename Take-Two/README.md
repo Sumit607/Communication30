@@ -2,19 +2,19 @@
 
 Android communication practice: **Think → Take 1 → up to three corrections → Take 2 → surprise follow-up → reflect.**
 
-Status: **Engineering foundation built: Expo/TypeScript, typed SQLite schema and migrations, database startup, linting, formatting and tests. Coaching validation has not run; product workflows are not implemented.**
+Status: **Interactive UI prototype for browser and Expo Go review. Full Android app implementation is paused until the user approves the design.** The engineering foundation is preserved; coaching validation has not run.
 
 The original v1.6 specification has been copied without changes to [docs/TAKE_TWO_SPEC_v1.6.md](docs/TAKE_TWO_SPEC_v1.6.md). All 18 sections were reviewed. The specification is the product source of truth; the review documents identify proposed resolutions rather than silently changing it. The user's subsequent request authorized the initial project and package setup. It did not mark P0 passed or authorize personal recording uploads or paid AI requests.
 
-## Run the scaffold
+## Review the prototype
 
 From this directory:
 
 ```sh
-npm start
+npx expo start --go --lan --port 8090
 ```
 
-Open it with a compatible Expo Go on Android. Startup creates/migrates an empty local SQLite database before rendering the setup screen. The other routes remain feature placeholders. Recording, coaching, progression, reminders and user-data repositories are not implemented. An Android bundle check or desktop SQLite test does not replace a physical-device test.
+Open the printed web address in a browser or scan the QR in compatible Expo Go on Android, using the same Wi-Fi as this computer. The `preview.ts` entry loads an isolated visual prototype with temporary interactions. It does not open SQLite, request camera/microphone access, use an API key or send AI requests. See [phone access and review steps](docs/PROTOTYPE_REVIEW.md) and [current build status](docs/BUILD_STATUS.md). The production routes and unfinished services remain separate and inactive.
 
 ```sh
 npm run typecheck

@@ -13,7 +13,7 @@ The product specification is `docs/TAKE_TWO_SPEC_v1.6.md`. Read the architecture
 
 ## Scope and product constraints
 
-The user authorized engineering foundation work: Expo/TypeScript setup, typed SQLite schema, generated migrations, database startup, lint/format/test configuration and a minimal shell. Stop after foundation verification. This does not authorize the thirty-day screens, coaching workflow or native measurement features. Keep the P0 result explicitly unrun until evidence exists.
+The latest user instruction is to build an interactive visual prototype first, reviewable in a browser and Expo Go, then build the app only after they approve the design. Full application implementation is paused. The current entry point is `preview.ts`, which renders the isolated UI under `src/features/preview/` without database, camera, microphone, AI or credential services. Preserve existing application work for later; do not activate it or claim the prototype is the operational app. The user's fitness-app references guide the blue image-led Home and day layouts; the four blank thinking fields remain fundamental. P0 is not run or passed. Illustrative feedback must be labelled; preview interactions must never create actual programme progress.
 
 Preserve blank-first thinking, Take 1 → at most three corrections → Take 2, a hidden follow-up, no teleprompter, a maximum of three takes per task, and general communication first. Video and diary stay local except explicit user export; speaking analysis sends extracted audio only, with the spec's allowed text/measurements. Do not add a temporary full-video upload path.
 
