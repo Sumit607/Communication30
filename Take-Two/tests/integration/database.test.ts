@@ -58,10 +58,14 @@ test('startup applies all 20 tables with constraints enabled and no seeded user 
 
 test('reinitializing does not replay migrations or erase local records', async () => {
   createDayAndTask();
+  const migrationsBefore = database.sqlite
+    .prepare('SELECT * FROM __drizzle_migrations ORDER BY id')
+    .all();
+  expect(migrationsBefore.length).toBeGreaterThan(0);
   await initializeDatabase(database.connection);
-  expect(
-    database.sqlite.prepare('SELECT count(*) AS count FROM __drizzle_migrations').get()?.count,
-  ).toBe(1);
+  expect(database.sqlite.prepare('SELECT * FROM __drizzle_migrations ORDER BY id').all()).toEqual(
+    migrationsBefore,
+  );
   expect(
     createDatabaseClient(database.connection).select().from(days).all()[0].completedAt,
   ).toBeNull();

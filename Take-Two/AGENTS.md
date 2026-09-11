@@ -13,6 +13,8 @@ The product specification is `docs/TAKE_TWO_SPEC_v1.6.md`. Read the architecture
 
 ## Scope and product constraints
 
+On 11 September 2026 the user explicitly requested embedding their Gemini key in a personal APK. For this profile only, inject the key from a secret EAS build variable on the remote Android builder; never place its value in tracked source, app config, logs, or a publicly distributed artifact. See `docs/PERSONAL_BUILD.md`. The public source retains a null credential stub and other build profiles remain user-entry-only. This is an explicit user-authorized exception to the earlier credential policy below.
+
 On 8 September 2026 the user explicitly authorized building the mobile app with Gemini's free tier. This supersedes the prototype-only pause and the earlier paid-project requirement. Preserve the original specification unchanged; record deviations in docs. Build a standalone Android APK using the approved blue prototype as visual reference. Free-tier data-use disclosure must precede explicit audio/text requests; never enable billing or automatically fall back to a paid model. Credentials remain user-entered in SecureStore. P0 quality and physical-device checks remain unpassed until actual evidence exists. Preview simulations must never create actual programme progress.
 
 Preserve blank-first thinking, Take 1 → at most three corrections → Take 2, a hidden follow-up, no teleprompter, a maximum of three takes per task, and general communication first. Video and diary stay local except explicit user export; speaking analysis sends extracted audio only, with the spec's allowed text/measurements. Do not add a temporary full-video upload path.

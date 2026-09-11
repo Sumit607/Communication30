@@ -54,6 +54,7 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
+    "eas-build-post-install": "node scripts/prepare-personal-build.cjs",
     "start": "expo start",
     "android": "expo start --android",
     "typecheck": "tsc --noEmit",

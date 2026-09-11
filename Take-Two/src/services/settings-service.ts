@@ -2,8 +2,13 @@ import { eq } from 'drizzle-orm';
 import type { AppDatabase } from '@/db/client';
 import { settings } from '@/db/schema';
 import { checkModelAccess } from './gemini/client';
+import { resolveModel } from './gemini/model';
 import { getCredential, saveCredential, clearCredential } from './security/credentials';
 export { clearCredential };
+export { resolveModel } from './gemini/model';
+export async function hasSavedCredential() {
+  return Boolean(await getCredential());
+}
 export function loadSettings(db: AppDatabase) {
   return db.select().from(settings).where(eq(settings.id, 1)).get();
 }
@@ -19,7 +24,7 @@ export async function configureAi(db: AppDatabase, key: string, model: string) {
 }
 export async function testAiAccess(db: AppDatabase) {
   const key = await getCredential(),
-    model = loadSettings(db)?.geminiModel;
-  if (!key || !model) throw new Error('Save your model and API key first.');
+    model = resolveModel(loadSettings(db)?.geminiModel);
+  if (!key) throw new Error('Save your API key first.');
   await checkModelAccess(key, model);
 }

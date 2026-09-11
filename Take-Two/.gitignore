@@ -38,6 +38,8 @@ yarn-error.*
 !.env.example
 
 # Private evaluation data and credentials
+*.apk
+*.aab
 private/
 recordings/
 exports/
