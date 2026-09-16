@@ -10,6 +10,8 @@ export function publicAiError(error: unknown) {
     typeof error === 'object' && error !== null && 'status' in error ? Number(error.status) : 0;
   if (status === 429)
     return 'Gemini quota reached. Your work is saved. Retry later; no paid fallback was used.';
+  if (status === 503)
+    return 'Gemini is temporarily busy. Your recording is saved. Try analysis again in a few minutes; you do not need to record again or replace your key.';
   if (status === 401 || status === 403)
     return 'Gemini access was denied. Check your API key and project in Settings.';
   if (status === 404)

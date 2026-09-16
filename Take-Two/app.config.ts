@@ -12,6 +12,8 @@ const config: ExpoConfig = {
     'expo-secure-store',
     'expo-sharing',
     'expo-asset',
+    'expo-font',
+    'expo-audio',
     [
       'expo-camera',
       {
@@ -25,14 +27,14 @@ const config: ExpoConfig = {
     'expo-notifications',
   ],
   experiments: { typedRoutes: true },
-  version: '1.0.1',
+  version: '1.0.2',
   orientation: 'portrait',
   icon: './assets/icons/icon.png',
   userInterfaceStyle: 'light',
   ios: { supportsTablet: true },
   android: {
     package: 'com.sumitghode607.taketwo',
-    versionCode: 2,
+    versionCode: 3,
     allowBackup: false,
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',
