@@ -34,6 +34,8 @@ This is a personal configuration update, not completion of all v1.6 features. De
 
 The first personal APK (1.0.1) finished successfully on 11 September. Its post-install log confirmed credential injection, and Gradle completed successfully. Review on 13 September found Expo Doctor warnings for missing direct `expo-font` and SDK patch mismatches. The replacement 1.0.2 adds `expo-font` and its config plugin and uses `npx expo install --fix` to align SDK packages. Native dependencies require a new APK.
 
+The replacement 1.0.2 / code 3 build is finished. On 17 September, its remote logs confirmed 21/21 Expo checks, successful private credential injection and `BUILD SUCCESSFUL in 13m 51s`. A buffered HTTP-range inspection of the actual APK extracted its JavaScript bundle in memory and confirmed that the embedded key exactly matches the supplied credential, the tested model is present and font assets are packaged. Verification printed booleans and byte counts only. The APK is 138,364,960 bytes and bundles JavaScript for standalone use; this does not substitute for the phone checklist below.
+
 The repository-root `.easignore` excludes Git history, local tooling, docs, tests, private data, and generated build artifacts. This reduced the source upload from 26.3 MB to 2.2 MB and resolved the stalled transfer. App source, native modules, migrations, and runtime assets remain included. Neither the API key nor a personal APK download URL belongs in these public docs.
 
 ## First phone verification (pending)
