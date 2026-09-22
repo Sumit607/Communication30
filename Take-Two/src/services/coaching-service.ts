@@ -28,7 +28,7 @@ async function access(db: AppDatabase) {
     apiKey = await getCredential();
   if (!config?.privacyAcknowledgedAt)
     throw new Error('Read and accept the free-tier data policy in Settings first.');
-  if (!apiKey) throw new Error('Save your Gemini key in Settings first.');
+  if (!apiKey) throw new Error('AI Coach service is not configured in this build.');
   return { apiKey, model: resolveModel(config.geminiModel) };
 }
 async function exclusive<T>(id: string, action: () => Promise<T>) {

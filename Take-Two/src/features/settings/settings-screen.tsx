@@ -1,26 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { Body, Button, Field, Heading, Notice } from '@/components/ui/controls';
+import { Body, Button, Heading, Notice } from '@/components/ui/controls';
 import { Screen } from '@/components/ui/screen';
 import { useDatabase } from '@/db/use-database';
 import {
-  configureAi,
   loadSettings,
   testAiAccess,
-  clearCredential,
   hasSavedCredential,
   resolveModel,
 } from '@/services/settings-service';
 import { acknowledgeFreeTier } from '@/services/coaching-service';
+
 export default function SettingsScreen() {
   const { db, refresh } = useDatabase();
   const settings = loadSettings(db);
-  const [key, setKey] = useState(''),
-    [model, setModel] = useState(resolveModel(settings?.geminiModel)),
+  const [model] = useState(resolveModel(settings?.geminiModel)),
     [hasKey, setHasKey] = useState(false),
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState(''),
     [error, setError] = useState('');
+
   useEffect(() => {
     let mounted = true;
     hasSavedCredential().then(
@@ -35,6 +34,7 @@ export default function SettingsScreen() {
       mounted = false;
     };
   }, []);
+
   async function run(action: () => Promise<void>, success: string) {
     setBusy(true);
     setError('');
@@ -42,16 +42,14 @@ export default function SettingsScreen() {
     try {
       await action();
       setHasKey(await hasSavedCredential());
-      setKey('');
       setMessage(success);
     } catch {
-      setError(
-        'This action could not finish. Check the key, model access and network, then try again.',
-      );
+      setError('This action could not finish. Check network connectivity and try again.');
     } finally {
       setBusy(false);
     }
   }
+
   return (
     <Screen title="Settings">
       <Heading>Your practice. Your data.</Heading>
@@ -78,56 +76,28 @@ export default function SettingsScreen() {
         />
       )}
       {Platform.OS === 'web' ? (
-        <Body>API key entry is available only in the Android app’s secure storage.</Body>
+        <Body>AI Coach operates inside the standalone Android application.</Body>
       ) : (
         <>
-          {hasKey && <Body>Gemini key is configured. No need to paste it again.</Body>}
-          <Field
-            label={hasKey ? 'Replace key (optional)' : 'Gemini API key'}
-            compact
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={key}
-            onChangeText={setKey}
-            placeholder="Stored securely on this phone"
+          <Body>
+            {hasKey
+              ? 'AI Coach: Pre-configured and ready on this phone.'
+              : 'AI Coach: Built-in service configuration.'}
+          </Body>
+          <Body muted>Model: {model}</Body>
+          <Button
+            label="Test Gemini connection"
+            secondary
+            disabled={busy}
+            onPress={() =>
+              run(
+                () => testAiAccess(db),
+                'Gemini replied OK. A small text request succeeded; no recording was sent.',
+              )
+            }
           />
         </>
       )}
-      <Field
-        label="Gemini model ID"
-        compact
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={model}
-        onChangeText={setModel}
-        placeholder="Exact model to validate"
-      />
-      <Button
-        label="Save AI configuration"
-        busy={busy}
-        disabled={Platform.OS === 'web' || !model.trim()}
-        onPress={() => run(() => configureAi(db, key, model), 'Configuration saved securely.')}
-      />
-      <Button
-        label="Test Gemini connection"
-        secondary
-        disabled={busy || Platform.OS === 'web'}
-        onPress={() =>
-          run(
-            () => testAiAccess(db),
-            'Gemini replied OK. A small text request succeeded; no recording was sent.',
-          )
-        }
-      />
-      <Button
-        label="Disable saved key"
-        secondary
-        disabled={busy || Platform.OS === 'web'}
-        onPress={() =>
-          run(clearCredential, 'Key disabled on this phone. Paste a key to enable Gemini again.')
-        }
-      />
       {message && <Body>{message}</Body>}
       {error && <Notice>{error}</Notice>}
       <Body muted>

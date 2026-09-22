@@ -63,15 +63,20 @@ export function validateCoachResult(raw: unknown, durationS: number): CoachResul
     result.reshoot_brief.length !== ids.length ||
     result.reshoot_brief.some(
       (brief, i) =>
-        brief.correction_id !== ids[i] || brief.instruction !== result.corrections[i].fix,
+        brief.correction_id !== ids[i] ||
+        normalize(brief.instruction) !== normalize(result.corrections[i].fix),
     )
   )
     throw new Error('The reshoot brief must repeat the original fixes.');
+  result.reshoot_brief.forEach((brief, i) => {
+    brief.instruction = result.corrections[i].fix;
+  });
   if (
     result.say_this_instead &&
     !normalize(result.transcript).includes(normalize(result.say_this_instead.you_said))
-  )
-    throw new Error('The replacement phrase was not found in the transcript.');
+  ) {
+    result.say_this_instead = null;
+  }
   const visible = JSON.stringify({ ...result, hidden_follow_up: undefined });
   if (normalize(visible).includes(normalize(result.hidden_follow_up)))
     throw new Error('The hidden follow-up leaked into visible feedback.');

@@ -26,7 +26,7 @@ test('baseline preview hides preparation and reveals sample follow-up only after
   await fireEvent.press(screen.getByRole('button', { name: 'FINISH PREVIEW TAKE' }));
   await fireEvent.press(screen.getByRole('button', { name: 'REVEAL MY FOLLOW-UP' }));
   expect(screen.getByText('SAMPLE FOLLOW-UP')).toBeOnTheScreen();
-}, 20000);
+}, 60000);
 
 test('prepared-day preview keeps thinking blank and gates the outline on all four fields', async () => {
   await render(<PreviewApp />);

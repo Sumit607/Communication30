@@ -25,6 +25,6 @@ export async function configureAi(db: AppDatabase, key: string, model: string) {
 export async function testAiAccess(db: AppDatabase) {
   const key = await getCredential(),
     model = resolveModel(loadSettings(db)?.geminiModel);
-  if (!key) throw new Error('Save your API key first.');
+  if (!key) throw new Error('AI Coach service is not configured in this build.');
   await checkModelAccess(key, model);
 }

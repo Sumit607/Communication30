@@ -28,11 +28,33 @@ export default function StudioScreen() {
   const recordings = live ? (attempt ? [attempt.take] : []) : dayTakes(db, dayId),
     saved = recordings.filter((take) => take.state === 'saved');
   const durationS = live ? 60 : day.policy.durationS;
-  const { camera, state, count, elapsed, error: recordingError, start, stop } = useRecording(db, dayId, durationS, () => {
-    refresh();
-    router.replace({ pathname: live ? '/day/[dayId]/follow-up' : saved.length ? '/day/[dayId]/compare' : '/day/[dayId]/coach', params: { dayId } });
-  }, live);
-  const busy = state !== 'idle', capturing = state === 'recording';
+  const {
+    camera,
+    state,
+    count,
+    elapsed,
+    error: recordingError,
+    start,
+    stop,
+  } = useRecording(
+    db,
+    dayId,
+    durationS,
+    () => {
+      refresh();
+      router.replace({
+        pathname: live
+          ? '/day/[dayId]/follow-up'
+          : saved.length
+            ? '/day/[dayId]/compare'
+            : '/day/[dayId]/coach',
+        params: { dayId },
+      });
+    },
+    live,
+  );
+  const busy = state !== 'idle',
+    capturing = state === 'recording';
   const coach = originalCoach(db, dayId);
   if (Platform.OS === 'web')
     return (
@@ -66,7 +88,9 @@ export default function StudioScreen() {
   return (
     <Screen
       title={busy ? 'Recording' : live ? 'Live Q' : 'Studio'}
-      detail={busy ? undefined : recordings.length + (live ? ' / 1 attempt used' : ' / 3 attempts used')}
+      detail={
+        busy ? undefined : recordings.length + (live ? ' / 1 attempt used' : ' / 3 attempts used')
+      }
       dark
       back={!busy}
       footer={
@@ -88,7 +112,8 @@ export default function StudioScreen() {
                 />
                 <Button
                   label="Stop early"
-                  secondary dark
+                  secondary
+                  dark
                   onPress={() =>
                     Alert.alert(
                       'Stop this attempt?',
@@ -106,7 +131,9 @@ export default function StudioScreen() {
         ) : (
           <Button
             label={live ? 'Record my answer' : saved.length ? 'Record next take' : 'Record Take 1'}
-            disabled={!ready || (!live && confidence === null) || recordings.length >= (live ? 1 : 3)}
+            disabled={
+              !ready || (!live && confidence === null) || recordings.length >= (live ? 1 : 3)
+            }
             onPress={() => {
               try {
                 if (!live && !recordings.length && confidence !== null)
@@ -122,7 +149,13 @@ export default function StudioScreen() {
     >
       {!busy && (
         <Text style={{ color: '#F8F6F2', fontSize: 23, fontWeight: '600', lineHeight: 31 }}>
-          {live ? (question?.revealedAt ? question.question : 'Reveal your question on the Live Q screen first.') : saved.length ? 'Same topic. Focus on your corrections.' : day.brief}
+          {live
+            ? question?.revealedAt
+              ? question.question
+              : 'Reveal your question on the Live Q screen first.'
+            : saved.length
+              ? 'Same topic. Focus on your corrections.'
+              : day.brief}
         </Text>
       )}
       <View style={{ height: 400, borderRadius: 10, overflow: 'hidden' }}>
@@ -185,16 +218,26 @@ export default function StudioScreen() {
           <Button
             key={take.id}
             label={'Play attempt ' + take.takeNo}
-            secondary dark
+            secondary
+            dark
             onPress={() => setPlayback(take.filePath)}
           />
         ))}
       {!busy && playback && <Playback uri={playback} />}
-      {!busy && !live && coach && saved.length > 0 && coach.result.reshoot_brief.map(item => <Text key={item.correction_id} style={{color: '#F8F6F2', fontSize: 17, lineHeight: 25}}>{item.instruction}</Text>)}
+      {!busy &&
+        !live &&
+        coach &&
+        saved.length > 0 &&
+        coach.result.reshoot_brief.map((item) => (
+          <Text key={item.correction_id} style={{ color: '#F8F6F2', fontSize: 17, lineHeight: 25 }}>
+            {item.instruction}
+          </Text>
+        ))}
       {!busy && !live && saved.length > 0 && (
         <Button
           label="Review Take 1"
-          secondary dark
+          secondary
+          dark
           onPress={() => router.push({ pathname: '/day/[dayId]/coach', params: { dayId } })}
         />
       )}

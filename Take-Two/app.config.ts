@@ -27,14 +27,14 @@ const config: ExpoConfig = {
     'expo-notifications',
   ],
   experiments: { typedRoutes: true },
-  version: '1.0.2',
+  version: '1.0.3',
   orientation: 'portrait',
   icon: './assets/icons/icon.png',
   userInterfaceStyle: 'light',
   ios: { supportsTablet: true },
   android: {
     package: 'com.sumitghode607.taketwo',
-    versionCode: 3,
+    versionCode: 4,
     allowBackup: false,
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',

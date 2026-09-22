@@ -1,6 +1,14 @@
 import { and, asc, desc, eq } from 'drizzle-orm';
 import type { AppDatabase } from '../client';
-import { days, programmes, taskInstances, essays, feedback, followupAttempts, takes } from '../schema';
+import {
+  days,
+  programmes,
+  taskInstances,
+  essays,
+  feedback,
+  followupAttempts,
+  takes,
+} from '../schema';
 import { curriculum, policyFor } from '@/features/programme/curriculum';
 export function newId(prefix: string) {
   return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
@@ -69,13 +77,47 @@ export function assertDayUnlocked(db: AppDatabase, dayId: string) {
 /** Complete only after the required speaking loop and writing are durably saved. Diary is optional. */
 export function completeDayIfEligible(db: AppDatabase, dayId: string) {
   const day = loadDay(db, dayId);
-  const saved = db.select().from(takes).where(eq(takes.taskId, day.taskId)).all().filter(take => take.state === 'saved');
-  const first = saved[0], second = saved[1];
-  const coached = first && db.select().from(feedback).where(and(eq(feedback.takeId, first.id), eq(feedback.kind, 'coach'))).get();
-  const compared = second && db.select().from(feedback).where(and(eq(feedback.takeId, second.id), eq(feedback.kind, 'delta'))).get();
-  const followup = db.select().from(followupAttempts).where(eq(followupAttempts.dayId, dayId)).get();
-  const writing = db.select().from(essays).where(eq(essays.id, dayId + '-essay')).get();
-  if (!first || !second || !coached || !compared || followup?.analysisState !== 'complete' || !writing?.submittedAt) return false;
+  const saved = db
+    .select()
+    .from(takes)
+    .where(eq(takes.taskId, day.taskId))
+    .all()
+    .filter((take) => take.state === 'saved');
+  const first = saved[0],
+    second = saved[1];
+  const coached =
+    first &&
+    db
+      .select()
+      .from(feedback)
+      .where(and(eq(feedback.takeId, first.id), eq(feedback.kind, 'coach')))
+      .get();
+  const compared =
+    second &&
+    db
+      .select()
+      .from(feedback)
+      .where(and(eq(feedback.takeId, second.id), eq(feedback.kind, 'delta')))
+      .get();
+  const followup = db
+    .select()
+    .from(followupAttempts)
+    .where(eq(followupAttempts.dayId, dayId))
+    .get();
+  const writing = db
+    .select()
+    .from(essays)
+    .where(eq(essays.id, dayId + '-essay'))
+    .get();
+  if (
+    !first ||
+    !second ||
+    !coached ||
+    !compared ||
+    followup?.analysisState !== 'complete' ||
+    !writing?.submittedAt
+  )
+    return false;
   db.update(days).set({ completedAt: new Date() }).where(eq(days.id, dayId)).run();
   return true;
 }

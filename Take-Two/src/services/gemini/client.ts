@@ -16,8 +16,31 @@ export function publicAiError(error: unknown) {
     return 'Gemini access was denied. Check your API key and project in Settings.';
   if (status === 404)
     return 'This model is unavailable. Choose an accessible free-tier model in Settings.';
+  if (error instanceof Error && error.message) {
+    if (
+      error.message.includes('free-tier data policy') ||
+      error.message.includes('Settings first') ||
+      error.message.includes('APK') ||
+      error.message.includes('storage') ||
+      error.message.includes('evidence') ||
+      error.message.includes('unsupported') ||
+      error.message.includes('quote') ||
+      error.message.includes('duration')
+    ) {
+      return error.message;
+    }
+  }
   return 'Analysis could not finish or its response was invalid. Your work is saved. Check your connection and settings before retrying.';
 }
+function parseCleanJson(text: string): unknown {
+  const cleaned = text
+    .trim()
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
+  return JSON.parse(cleaned);
+}
+
 export async function requestJson<T>({
   apiKey,
   model,
@@ -64,8 +87,9 @@ export async function requestJson<T>({
     },
   });
   if (!response.text) throw new Error('No analysis returned.');
-  return schema.parse(JSON.parse(response.text));
+  return schema.parse(parseCleanJson(response.text));
 }
+
 export async function checkModelAccess(apiKey: string, model: string) {
   if (!/^gemini-[a-zA-Z0-9._-]+$/.test(model)) throw new Error('Enter an exact Gemini model ID.');
   const ai = new GoogleGenAI({
@@ -124,7 +148,7 @@ export async function evaluateWave({
   });
   if (!response.text) throw new Error('The provider returned no critique.');
   return {
-    result: validateCoachResult(JSON.parse(response.text), info.durationS),
+    result: validateCoachResult(parseCleanJson(response.text), info.durationS),
     usage: response.usageMetadata ?? null,
   };
 }

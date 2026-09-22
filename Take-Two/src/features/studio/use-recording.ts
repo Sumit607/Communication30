@@ -76,7 +76,9 @@ export function useRecording(
       }
       if (!camera.current || generation.current !== run)
         throw new Error('Camera is not ready. No attempt was used.');
-      takeId = live ? reserveFollowup(db, dayId, recordingDestination) : reserveTake(db, dayId, recordingDestination);
+      takeId = live
+        ? reserveFollowup(db, dayId, recordingDestination)
+        : reserveTake(db, dayId, recordingDestination);
       startTime.current = Date.now();
       setElapsed(0);
       setState('recording');
