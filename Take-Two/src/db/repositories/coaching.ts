@@ -11,6 +11,7 @@ import {
 } from '@/services/gemini/coachSchema';
 import { COACH_PROMPT_VERSION, COACH_RUBRIC_VERSION } from '@/services/gemini/coachPrompt';
 import { deltaSchema, validateDelta, type DeltaResult } from '@/services/gemini/deltaPrompt';
+export type { CoachResult };
 export function takeFeedback(db: AppDatabase, takeId: string, kind: 'coach' | 'delta') {
   return db
     .select()
